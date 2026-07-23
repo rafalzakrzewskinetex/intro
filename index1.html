@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="NetEx — freelance network engineering, architecture, automation and telemetry services by Rafał Zakrzewski." />
+  <meta name="theme-color" content="#111111" />
+  <title>NetEx | Network Excellence & Experience</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0f0f0f;
+      --bg-soft: #171717;
+      --surface: #1b1b1b;
+      --surface-strong: #242424;
+      --text: #f2f2f2;
+      --muted: #a9a9a9;
+      --line: #343434;
+      --accent: #dedede;
+      --accent-2: #909090;
+      --nav-bg: rgba(15,15,15,.92);
+      --terminal-bg: #090909;
+      --button-bg: #e5e5e5;
+      --button-text: #111111;
+      --shadow: 0 24px 70px rgba(0,0,0,.35);
+      --max: 1180px;
+      --radius: 22px;
+    }
+
+    html[data-theme="light"] {
+      color-scheme: light;
+      --bg: #f3f3f3;
+      --bg-soft: #e8e8e8;
+      --surface: #ffffff;
+      --surface-strong: #e2e2e2;
+      --text: #161616;
+      --muted: #5f5f5f;
+      --line: #c9c9c9;
+      --accent: #2f2f2f;
+      --accent-2: #6d6d6d;
+      --nav-bg: rgba(243,243,243,.92);
+      --terminal-bg: #1b1b1b;
+      --button-bg: #202020;
+      --button-text: #ffffff;
+      --shadow: 0 24px 60px rgba(0,0,0,.12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 52%, var(--bg) 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background .25s ease, color .25s ease;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { font: inherit; }
+    .container { width: min(calc(100% - 40px), var(--max)); margin-inline: auto; }
+
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--nav-bg);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: .02em; }
+    .brand-logo {
+      width: 118px;
+      height: 44px;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      transition: filter .25s ease, border-color .25s ease;
+    }
+    html:not([data-theme="light"]) .brand-logo { filter: invert(1); }
+    .nav-links { display: flex; gap: 24px; color: var(--muted); font-size: .94rem; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+
+    .theme-toggle {
+      width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line);
+      background: var(--surface); color: var(--text); cursor: pointer;
+      display: grid; place-items: center; transition: .2s ease;
+    }
+    .theme-toggle:hover { transform: translateY(-2px); background: var(--surface-strong); }
+    .theme-toggle span { font-size: 1.05rem; line-height: 1; }
+
+    .button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 13px 20px; border-radius: 999px; border: 1px solid transparent;
+      font-weight: 750; transition: .22s ease; cursor: pointer;
+    }
+    .button-primary { background: var(--button-bg); color: var(--button-text); box-shadow: var(--shadow); }
+    .button-primary:hover { transform: translateY(-2px); }
+    .button-secondary { border-color: var(--line); background: var(--surface); }
+    .button-secondary:hover { background: var(--surface-strong); transform: translateY(-2px); }
+
+    .hero { padding: 108px 0 82px; position: relative; }
+    .hero-grid { display: grid; grid-template-columns: 1.14fr .86fr; gap: 64px; align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: var(--surface); font-size: .84rem; font-weight: 700; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-2); }
+    h1 { font-size: clamp(3.1rem, 8vw, 6.7rem); line-height: .96; letter-spacing: -.065em; margin: 22px 0 24px; max-width: 850px; }
+    .gradient-text { color: var(--text); }
+    .hero p { color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 720px; margin: 0 0 32px; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .hero-card { border: 1px solid var(--line); border-radius: 30px; padding: 22px; background: var(--surface); box-shadow: var(--shadow); position: relative; overflow: hidden; }
+    .terminal { position: relative; background: var(--terminal-bg); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+    .terminal-top { display: flex; align-items: center; gap: 7px; padding: 14px 16px; border-bottom: 1px solid #3c3c3c; }
+    .terminal-top i { width: 10px; height: 10px; border-radius: 50%; background: #666; }
+    .terminal-top i:nth-child(2) { background: #999; }
+    .terminal-top i:nth-child(3) { background: #ccc; }
+    .terminal pre { margin: 0; padding: 24px; overflow: auto; color: #d3d3d3; font-size: .88rem; line-height: 1.9; min-height: 330px; }
+    .code-muted { color: #7d7d7d; }
+    .code-accent { color: #f0f0f0; }
+    .code-green { color: #a8a8a8; }
+
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+    .stat { padding: 18px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); }
+    .stat strong { display: block; font-size: 1.2rem; }
+    .stat span { color: var(--muted); font-size: .78rem; }
+
+    section { padding: 92px 0; }
+    .section-head { display: flex; justify-content: space-between; gap: 40px; align-items: end; margin-bottom: 38px; }
+    .kicker { color: var(--accent-2); text-transform: uppercase; letter-spacing: .18em; font-weight: 850; font-size: .76rem; }
+    h2 { margin: 8px 0 0; font-size: clamp(2.2rem, 5vw, 4.2rem); line-height: 1.05; letter-spacing: -.045em; }
+    .section-head p { color: var(--muted); max-width: 520px; margin: 0; }
+
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); transition: .25s ease; }
+    .card:hover { transform: translateY(-5px); background: var(--surface-strong); }
+    .icon { width: 48px; height: 48px; border-radius: 15px; display: grid; place-items: center; background: var(--surface-strong); color: var(--text); font-size: 1.25rem; margin-bottom: 22px; }
+    .card h3 { margin: 0 0 10px; font-size: 1.28rem; }
+    .card p { color: var(--muted); margin: 0; }
+
+    .split { display: grid; grid-template-columns: .9fr 1.1fr; gap: 56px; align-items: start; }
+    .panel { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 30px; }
+    .check-list { display: grid; gap: 16px; margin-top: 24px; }
+    .check { display: flex; gap: 12px; align-items: flex-start; color: var(--muted); }
+    .check b { color: var(--text); }
+    .process { counter-reset: item; display: grid; gap: 14px; }
+    .step { display: grid; grid-template-columns: 54px 1fr; gap: 18px; padding: 20px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); }
+    .step::before { counter-increment: item; content: "0" counter(item); color: var(--accent-2); font-weight: 900; font-size: 1.1rem; }
+    .step h3 { margin: 0 0 5px; }
+    .step p { margin: 0; color: var(--muted); }
+    .tech-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+    .tag { border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; color: var(--muted); background: var(--surface); font-size: .88rem; }
+
+    .cta { margin: 50px 0 92px; border: 1px solid var(--line); border-radius: 30px; padding: 48px; background: var(--surface); display: flex; justify-content: space-between; align-items: center; gap: 40px; box-shadow: var(--shadow); }
+    .contact-actions { display: flex; flex-direction: column; align-items: stretch; gap: 10px; min-width: 280px; }
+    .contact-email { color: var(--muted); font-size: .88rem; text-align: center; overflow-wrap: anywhere; }
+    .cta h2 { font-size: clamp(2rem, 5vw, 3.6rem); }
+    .cta p { color: var(--muted); max-width: 660px; }
+    footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+
+    @media (max-width: 900px) {
+      .hero-grid, .split { grid-template-columns: 1fr; }
+      .hero { padding-top: 72px; }
+      .cards { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      .section-head, .cta { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 620px) {
+      .container { width: min(calc(100% - 24px), var(--max)); }
+      h1 { font-size: 3.45rem; }
+      .cards, .stats { grid-template-columns: 1fr; }
+      .hero-card { padding: 12px; border-radius: 22px; }
+      .terminal pre { font-size: .74rem; padding: 18px; min-height: 280px; }
+      .cta { padding: 30px 24px; }
+      section { padding: 70px 0; }
+      .nav-actions .button { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Primary navigation">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="NetEx home">
+        <img class="brand-logo" src="data:image/jpeg;base64,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" alt="NetEx logo" />
+      </a>
+      <div class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#expertise">Expertise</a>
+        <a href="#approach">Approach</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light mode" title="Switch theme">
+          <span id="theme-icon" aria-hidden="true">☀</span>
+        </button>
+        <a class="button button-secondary" href="https://www.linkedin.com/in/rzakrzewski/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <header class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow"><span class="dot"></span> Independent network expertise</span>
+          <h1><span class="gradient-text">NetExcellence.</span><br />NetExperience.</h1>
+          <p>Freelance consulting for modern Telco and IP networks — from architecture and automation to observability, telemetry and proof-of-concept delivery.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#contact">Discuss a project →</a>
+            <a class="button button-secondary" href="#services">Explore services</a>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Example network telemetry workflow">
+          <div class="terminal">
+            <div class="terminal-top"><i></i><i></i><i></i></div>
+            <pre><span class="code-muted"># NetEx delivery model</span>
+<span class="code-accent">discover</span>:
+  network: multi-vendor
+  requirements: measurable
+
+<span class="code-accent">design</span>:
+  architecture: scalable
+  interfaces: [gNMI, REST, Kafka]
+
+<span class="code-accent">build</span>:
+  automation: Python
+  runtime: Docker
+  telemetry: streaming
+
+<span class="code-accent">validate</span>:
+  status: <span class="code-green">production-ready</span>
+  outcome: visible_value</pre>
+          </div>
+          <div class="stats">
+            <div class="stat"><strong>IP & Optical</strong><span>Network domains</span></div>
+            <div class="stat"><strong>PoC > Ops</strong><span>Practical delivery</span></div>
+            <div class="stat"><strong>Vendor-neutral</strong><span>Solution mindset</span></div>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <section id="services">
+      <div class="container">
+        <div class="section-head">
+          <div><span class="kicker">Services</span><h2>Engineering that turns complexity into clarity.</h2></div>
+          <p>Focused support for operators, vendors and technology teams that need independent expertise, rapid validation and implementation-ready outcomes.</p>
+        </div>
+        <div class="cards">
+          <article class="card"><div class="icon">⌁</div><h3>Network Architecture</h3><p>High-level and detailed designs for IP, transport and optical environments, with clear assumptions, interfaces and operational implications.</p></article>
+          <article class="card"><div class="icon">⚙</div><h3>Automation & Integration</h3><p>Python-based tooling, API integration, workflow automation and containerized collectors designed around real operational needs.</p></article>
+          <article class="card"><div class="icon">◉</div><h3>Telemetry & Observability</h3><p>Streaming telemetry, metrics pipelines, alert logic and dashboards using technologies such as gNMI, InfluxDB and Grafana.</p></article>
+          <article class="card"><div class="icon">◇</div><h3>Proof of Concept</h3><p>Fast, measurable PoCs that reduce technical uncertainty before a broader investment or production rollout.</p></article>
+          <article class="card"><div class="icon">⇄</div><h3>Vendor & Solution Evaluation</h3><p>Independent comparison of platforms, protocols and implementation approaches based on architecture, performance and operability.</p></article>
+          <article class="card"><div class="icon">✓</div><h3>Technical Advisory</h3><p>Hands-on support for design reviews, troubleshooting, requirements definition, documentation and technology decisions.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="expertise">
+      <div class="container split">
+        <div>
+          <span class="kicker">Expertise</span>
+          <h2>Broad network knowledge. Practical engineering focus.</h2>
+          <p style="color:var(--muted);max-width:620px;">NetEx combines network engineering experience with software-driven operations, enabling solutions that are technically sound and ready to be used by real teams.</p>
+          <div class="check-list">
+            <div class="check"><b>✓</b><span>IP networking, routing and modern transport architectures</span></div>
+            <div class="check"><b>✓</b><span>Optical and DWDM network environments</span></div>
+            <div class="check"><b>✓</b><span>Network management systems and northbound integration</span></div>
+            <div class="check"><b>✓</b><span>Performance monitoring, telemetry and capacity insight</span></div>
+            <div class="check"><b>✓</b><span>Automation, APIs, data pipelines and operational tooling</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3 style="margin-top:0">Technology landscape</h3>
+          <p style="color:var(--muted)">Selected technologies and methods relevant to NetEx assignments.</p>
+          <div class="tech-cloud" style="margin-top:22px">
+            <span class="tag">IP/MPLS</span><span class="tag">SRv6</span><span class="tag">DWDM</span><span class="tag">gNMI / gRPC</span><span class="tag">REST API</span><span class="tag">Kafka</span><span class="tag">Python</span><span class="tag">Docker</span><span class="tag">Linux</span><span class="tag">InfluxDB</span><span class="tag">Grafana</span><span class="tag">Telegraf</span><span class="tag">Network Automation</span><span class="tag">Streaming Telemetry</span><span class="tag">Solution Architecture</span><span class="tag">Technical Documentation</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="approach">
+      <div class="container">
+        <div class="section-head">
+          <div><span class="kicker">Approach</span><h2>A direct path from question to working answer.</h2></div>
+          <p>Engagements are structured to produce useful evidence early, keep decisions transparent and minimize unnecessary complexity.</p>
+        </div>
+        <div class="process">
+          <article class="step"><div><h3>Understand the operational goal</h3><p>Clarify the business outcome, current constraints, available data and the decision the project must enable.</p></div></article>
+          <article class="step"><div><h3>Define the optimal useful solution</h3><p>Select the architecture, interfaces, measurements and acceptance criteria needed to prove value.</p></div></article>
+          <article class="step"><div><h3>Build and validate</h3><p>Implement a working prototype or solution, test it with realistic inputs and document observed behavior.</p></div></article>
+          <article class="step"><div><h3>Prepare the next step</h3><p>Deliver clear findings, risks, recommendations and artifacts that support production implementation or further development.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container split">
+        <div class="panel">
+          <span class="kicker">Profile</span>
+          <h2 style="font-size:2.5rem">Rafał Zakrzewski</h2>
+          <p style="color:var(--muted)">Founder of NetEx, based in the Poznań area, Poland, with over 20 years of experience in the telecommunications industry and a strong focus on delivering independent network expertise through engineering excellence, practical knowledge and measurable outcomes.</p>
+          <a class="button button-secondary" style="margin-top:14px" href="https://www.linkedin.com/in/rzakrzewski/" target="_blank" rel="noopener noreferrer">View LinkedIn profile ↗</a>
+        </div>
+        <div>
+          <span class="kicker">Why NetEx</span>
+          <h2>Independent thinking, without the overhead.</h2>
+          <p style="color:var(--muted)">A freelance model makes it possible to engage focused senior expertise for a specific architecture question, PoC, integration challenge or technical review — without building a large project structure around it.</p>
+          <div class="check-list">
+            <div class="check"><b>01</b><span>Clear scope and direct communication</span></div>
+            <div class="check"><b>02</b><span>Hands-on technical contribution</span></div>
+            <div class="check"><b>03</b><span>Documentation designed for reuse</span></div>
+            <div class="check"><b>04</b><span>Solutions aligned with operational reality</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container" id="contact">
+      <section class="cta">
+        <div>
+          <span class="kicker">Let’s connect</span>
+          <h2>Have a network challenge worth solving?</h2>
+          <p>Connect via LinkedIn or email to discuss architecture, network automation, telemetry, observability or a focused proof of concept.</p>
+        </div>
+        <div class="contact-actions">
+          <a class="button button-primary" href="mailto:rafal.zakrzewski.net.x@gmail.com">Contact via email →</a>
+          <a class="button button-secondary" href="https://www.linkedin.com/in/rzakrzewski/" target="_blank" rel="noopener noreferrer">Contact via LinkedIn ↗</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> Rafał Zakrzewski NetEx. All rights reserved.</span>
+      <span>#NetExcellence · #NetExperience · just #NetEx</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const root = document.documentElement;
+    const toggle = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+
+    function applyTheme(theme) {
+      root.dataset.theme = theme;
+      const light = theme === 'light';
+      icon.textContent = light ? '☾' : '☀';
+      toggle.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+      themeColor.setAttribute('content', light ? '#f3f3f3' : '#0f0f0f');
+    }
+
+    const savedTheme = localStorage.getItem('netex-theme');
+    const preferredTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    applyTheme(savedTheme || preferredTheme);
+
+    toggle.addEventListener('click', () => {
+      const nextTheme = root.dataset.theme === 'light' ? 'dark' : 'light';
+      applyTheme(nextTheme);
+      localStorage.setItem('netex-theme', nextTheme);
+    });
+  </script>
+</body>
+</html>
