@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-palette="neutral">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +11,7 @@
       color-scheme: dark;
       --bg:#101010; --surface:#181818; --surface-2:#222; --text:#f2f2f2;
       --muted:#aaa; --line:#333; --button:#f2f2f2; --button-text:#111;
+      --accent:#d8d8d8; --accent-soft:#282828;
       --nav:rgba(16,16,16,.9); --shadow:0 20px 60px rgba(0,0,0,.32);
       --max:1080px; --radius:20px;
     }
@@ -18,7 +19,19 @@
       color-scheme: light;
       --bg:#f4f4f4; --surface:#fff; --surface-2:#e8e8e8; --text:#161616;
       --muted:#606060; --line:#ccc; --button:#1d1d1d; --button-text:#fff;
+      --accent:#333; --accent-soft:#ededed;
       --nav:rgba(244,244,244,.92); --shadow:0 20px 55px rgba(0,0,0,.11);
+    }
+    html[data-palette="warm"]{
+      --accent:#ff6600; --accent-soft:#2d1b10; --line:#5a321d;
+      --button:#ff6600; --button-text:#111; --nav:rgba(20,13,9,.92);
+      --shadow:0 20px 60px rgba(255,102,0,.12);
+    }
+    html[data-theme="light"][data-palette="warm"]{
+      --bg:#fff7f0; --surface:#fff; --surface-2:#ffe4d1; --text:#22150d;
+      --muted:#76543e; --line:#e9b58f; --accent:#ff6600; --accent-soft:#fff0e5;
+      --button:#ff6600; --button-text:#111; --nav:rgba(255,247,240,.94);
+      --shadow:0 20px 55px rgba(255,102,0,.14);
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
@@ -33,6 +46,10 @@
     .nav-actions{display:flex;gap:8px;align-items:center}
     .toggle{border:1px solid var(--line);background:var(--surface);color:var(--text);height:42px;border-radius:999px;padding:0 14px;cursor:pointer;font-weight:750}
     .toggle.icon{width:42px;padding:0;border-radius:50%}
+    .toggle.palette{min-width:88px}
+    .toggle[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+    html[data-palette="warm"] .eyebrow,html[data-palette="warm"] .kicker,html[data-palette="warm"] .metric{color:var(--accent)}
+    html[data-palette="warm"] .card:hover,html[data-palette="warm"] .tag:hover,html[data-palette="warm"] .brand-logo{border-color:var(--accent)}
     .hero{padding:100px 0 72px}
     .eyebrow{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:7px 12px;color:var(--muted);font-size:.82rem;font-weight:750}
     h1{font-size:clamp(3.2rem,9vw,6.6rem);line-height:.95;letter-spacing:-.065em;margin:22px 0}
@@ -75,6 +92,7 @@
       <a href="#top" aria-label="NetEx home"><img class="brand-logo" src="data:image/jpeg;base64,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" alt="NetEx logo"></a>
       <div class="nav-actions">
         <button class="toggle" id="language-toggle" type="button" aria-label="Change language"><span id="language-label">PL</span></button>
+        <button class="toggle palette" id="palette-toggle" type="button" aria-label="Switch to warm palette" aria-pressed="false"><span id="palette-label">WARM</span></button>
         <button class="toggle icon" id="theme-toggle" type="button" aria-label="Switch theme"><span id="theme-icon">☀</span></button>
       </div>
     </div>
@@ -167,7 +185,7 @@
 
   <footer>
     <div class="container footer-inner">
-      <span>© <span id="year"></span><span> Rafał Zakrzewski NetEx · NIP 7821151732 · REGON 540432537</span><br><span> · #NetExcellence · #NetExperience · #NetEx</span></span>
+      <span>© <span id="year"></span><span> · Rafał Zakrzewski NetEx · NIP 7821151732 · REGON 540432537</span><span> · · #NetExcellence · #NetExperience · #NetEx</span></span>
     </div>
   </footer>
 
@@ -204,7 +222,9 @@
         contactKicker: "Contact",
         contactTitle: "Let’s solve the network challenge.",
         contactText: "NetEx is based in the Poznań area, Poland, and supports focused freelance assignments for telecom and enterprise clients.",
-        emailButton: "Contact via email"
+        emailButton: "Contact via email",
+        paletteWarm: "WARM", paletteNeutral: "NEUTRAL",
+        paletteToWarm: "Switch to warm palette", paletteToNeutral: "Switch to neutral palette"
       },
       pl: {
         eyebrow: "Niezależna ekspertyza sieciowa",
@@ -237,7 +257,9 @@
         contactKicker: "Kontakt",
         contactTitle: "Rozwiążmy problem sieciowy.",
         contactText: "NetEx działa w rejonie Poznania i realizuje wyspecjalizowane zlecenia freelance dla klientów telco i enterprise.",
-        emailButton: "Kontakt przez e-mail"
+        emailButton: "Kontakt przez e-mail",
+        paletteWarm: "CIEPŁA", paletteNeutral: "NEUTRALNA",
+        paletteToWarm: "Przełącz na paletę ciepłą", paletteToNeutral: "Przełącz na paletę neutralną"
       }
     };
 
@@ -246,6 +268,8 @@
     const languageLabel = document.getElementById('language-label');
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = document.getElementById('theme-icon');
+    const paletteToggle = document.getElementById('palette-toggle');
+    const paletteLabel = document.getElementById('palette-label');
     const themeColor = document.querySelector('meta[name="theme-color"]');
 
     function applyLanguage(lang) {
@@ -256,25 +280,43 @@
       });
       languageLabel.textContent = lang === 'en' ? 'PL' : 'EN';
       languageToggle.setAttribute('aria-label', lang === 'en' ? 'Przełącz na język polski' : 'Switch to English');
+      refreshPaletteControl();
       localStorage.setItem('netex-language', lang);
     }
+
+    function refreshPaletteControl(){
+      const lang=root.lang==='pl'?'pl':'en';
+      const warm=root.dataset.palette==='warm';
+      paletteLabel.textContent=warm?translations[lang].paletteNeutral:translations[lang].paletteWarm;
+      paletteToggle.setAttribute('aria-label',warm?translations[lang].paletteToNeutral:translations[lang].paletteToWarm);
+      paletteToggle.setAttribute('aria-pressed',String(warm));
+    }
+    function updateThemeColor(){
+      const light=root.dataset.theme==='light', warm=root.dataset.palette==='warm';
+      themeColor.setAttribute('content',warm?(light?'#fff7f0':'#140d09'):(light?'#f4f4f4':'#101010'));
+    }
+    function applyPalette(palette){root.dataset.palette=palette;localStorage.setItem('netex-palette',palette);refreshPaletteControl();updateThemeColor();}
 
     function applyTheme(theme) {
       root.dataset.theme = theme;
       const light = theme === 'light';
       themeIcon.textContent = light ? '☾' : '☀';
       themeToggle.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
-      themeColor.setAttribute('content', light ? '#f4f4f4' : '#101010');
+      updateThemeColor();
       localStorage.setItem('netex-theme', theme);
     }
 
     const savedLang = localStorage.getItem('netex-language') || 'en';
-    const savedTheme = localStorage.getItem('netex-theme');
-    const preferredTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    const savedTheme = localStorage.getItem('netex-theme') || 'dark';
+    const savedPalette = localStorage.getItem('netex-palette') || 'neutral';
+    const preferredTheme = 'dark';
+    root.dataset.palette = savedPalette;
     applyLanguage(savedLang);
     applyTheme(savedTheme || preferredTheme);
+    applyPalette(savedPalette);
 
     languageToggle.addEventListener('click', () => applyLanguage(root.lang === 'en' ? 'pl' : 'en'));
+    paletteToggle.addEventListener('click', () => applyPalette(root.dataset.palette === 'warm' ? 'neutral' : 'warm'));
     themeToggle.addEventListener('click', () => applyTheme(root.dataset.theme === 'light' ? 'dark' : 'light'));
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
